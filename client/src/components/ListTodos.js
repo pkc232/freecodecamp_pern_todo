@@ -19,7 +19,7 @@ class ListTodos extends Component {
 
     async getTodos(){
         try{
-            const response = await fetch("http://localhost:5000/todos");
+            const response = await fetch("/todos");
             const jsonData = await response.json();
             this.setTodos(jsonData);
         }
@@ -30,7 +30,7 @@ class ListTodos extends Component {
 
     async deleteTodo(todoId){
         try{
-            const response = await fetch(`http://localhost:5000/todos/${todoId}`, {
+            const response = await fetch(`/todos/${todoId}`, {
                 method: "DELETE",
                 headers: {"Content-Type": "application/json"},
             });
