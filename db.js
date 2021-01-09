@@ -7,11 +7,13 @@ const devConfig = {
     password: process.env.PG_PASSWORD,
     host: process.env.PG_HOST,
     port: process.env.PG_PORT,
-    database: process.env.PG_DATABASE
+    database: process.env.PG_DATABASE,
+    ssl: true
 };
 
 const proConfig = {
-    connectionString: process.env.DATABASE_URL //heroku addon
+    connectionString: process.env.DATABASE_URL, //heroku addon
+    ssl: true
 };
 
 const pool = new Pool(process.env.NODE_ENV === "production" ? proConfig : devConfig);
