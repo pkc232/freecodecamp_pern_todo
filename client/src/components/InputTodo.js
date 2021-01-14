@@ -28,7 +28,7 @@ class InputTodo extends Component {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             });
-            window.location = "/";
+            window.location = "/todos";
         } 
         catch(err){
             console.log(err.message);
@@ -38,7 +38,7 @@ class InputTodo extends Component {
     render() {
         return (
             <Fragment>
-                <h1 className="text-center mt-5">Pern Todo List</h1>
+                <h1 className="text-center mt-5">The Ideal Gas Equation</h1>
                 <form className="d-flex mt-5" onSubmit={this.onSubmitForm}>
                     <input type="text" className="form-control" 
                     value={this.state.description}

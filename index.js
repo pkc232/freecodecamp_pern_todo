@@ -1,8 +1,11 @@
 const express = require('express');
+const passport = require("passport");
+const cookieSession = require('cookie-session');
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
 const path = require("path");
+require('./passport-setup');
 
 const PORT = process.env.PORT || 5000;
 
@@ -21,7 +24,30 @@ if(process.env.NODE_ENV === "production"){
     app.use(express.static(path.join(__dirname, "client/build")));
 }
 
+app.use(cookieSession({
+    name: `todo-session`,
+    keys: [`key1`, `key2`]
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 //ROUTES//
+app.get('/failed', (req, res) => res.send('You failed to login!'));
+app.get('/good', (req, res) => res.send(`Welcome ${req.user.email}`));
+
+app.get('/',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+app.get( '/google/callback',
+    passport.authenticate( 'google', {
+        successRedirect: '/good',
+        failureRedirect: '/failed'
+}));
+
+
 
 //create a todo
 
@@ -95,9 +121,9 @@ app.delete("/todos/:id", async(req, res) => {
     }
 });
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client/build/index.html"));
-})
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client/build/index.html"));
+// })
 
 app.listen(PORT, () => {
     console.log(`Server has started on port ${PORT}`);
